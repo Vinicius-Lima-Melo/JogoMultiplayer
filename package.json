@@ -1,0 +1,16 @@
+{
+  "name": "jogo-multiplayer",
+  "version": "1.0.0",
+  "description": "jogo para varios jogadores",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vinicius Lima",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ranked": "^0.4.0",
+    "socket.io": "^4.0.0"
+  }
+}
