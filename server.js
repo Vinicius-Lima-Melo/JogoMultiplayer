@@ -42,7 +42,6 @@ async function criarPeca(){
 	var px = Math.floor(Math.random() * 9) * 50;
     var py = Math.floor(Math.random() * 9) * 50;
     peca = {px,py};
-    console.log(peca);
 }
 
 jogadores = {};
@@ -54,7 +53,6 @@ criarPeca();
 
 io.on('connection', function(socket){
 	conexoes.push(socket);
-	console.log('Connected: %s sockets connected', conexoes.length);
 
 	//Disconnect
 	socket.on('disconnect',function(data){
@@ -69,7 +67,6 @@ io.on('connection', function(socket){
 	socket.on('novoJogador',function(name, positionX, positionY,callback){
 		callback(true);
 		socket.username = name;
-		// ranking[name] = {'pontos': 0};
 		let u = {'name':name, 'pontos': 0};
 		ranking.push(u);
 		atualizarJogadores();
@@ -92,14 +89,8 @@ io.on('connection', function(socket){
 	socket.on('moverJogador',function(positionX, positionY){
 		console.log("> Jogador: "+socket.username+" se moveu");
 		jogadores[socket.username] = {positionX,positionY};
-		// console.log(positionX, positionY);
-		// console.log(jogadores);
 		if (positionY == peca.py && positionX == peca.px) {
 			console.log("> "+socket.username+" pegou uma peca");
-			// EMITIR RANKING E ORDENAR
-			// ranking[socket.username].pontos++;
-			// console.log(ranking);
-
 			for ( i = 0; i < ranking.length; i++) {
 				if (ranking[i].name == socket.username) {
 					ranking[i].pontos++;
@@ -120,9 +111,6 @@ io.on('connection', function(socket){
 		console.log(peca);
 		io.sockets.emit('getPeca', peca);
 	});
-	// function pegarPeca(user){
-
-	// }
 
 	const scoreFn = jogador => jogador.pontos;
 
@@ -131,58 +119,6 @@ io.on('connection', function(socket){
 	}
 	function atualizarRanking(){
 		var rankedItems = ranked.ranking(ranking, scoreFn);
-		console.log(rankedItems);
 		io.sockets.emit('getRanking', rankedItems);
 	}
 });
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var jogadores = [];
-// var posicoes = [];
-
-
-// io.on('connection', function(socket){
-
-// 	socket.on('startJogador', (positionX, positionY) => {
-// 		// jogadores["_"+socket.id+""] = {positionX,positionY};
-// 		// jogadores.push(""+socket.id+"" = {positionX,positionY});
-// 		jogadores.push({"id" : socket.id,positionX,positionY})
-// 		// jogadores[socket.id] = {positionY};
-// 		// socket.emit("getJogadores", {jogadores});
-// 		atualizarJogadores();
-// 		console.log(jogadores);
-// 	});
-
-
-// 	socket.on('moverJogador', (px,py) => {
-// 		jogadores["_"+socket.id+""] = {positionX: px, positionY:py}
-// 		socket.broadcast.emit('atualizarPosicoes', jogadores);
-// 		console.log("> Ação: mover o jogador: "+ socket.id);
-// 		// console.log(jogadores);
-// 	})
-
-
-
-// 	function atualizarJogadores() {
-// 		io.sockets.emit('getJogadores', jogadores);
-// 	}
-// 	socket.on('disconnect',function(data){
-// 		// jogadores.splice(jogadores.indexOf(socket.id), 1);
-// 		// console.log("> -1 jogador");
-// 		atualizarJogadores();
-// 	});	
-// });
