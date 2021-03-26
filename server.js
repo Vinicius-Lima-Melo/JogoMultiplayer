@@ -102,7 +102,6 @@ io.on('connection', function(socket){
 		}
 		socket.broadcast.emit('atualizarPosicoes', jogadores);
 		atualizarJogadores();
-
 	});
 
 	socket.on('pegarPeca', (user)=> {
